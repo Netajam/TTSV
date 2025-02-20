@@ -117,7 +117,5 @@ if __name__ == "__main__":
     
     # Now just call your processing function with the TTS object
     process_input_texts(
-        input_dir=INPUT_DIRECTORY,
-        filename=FILENAME_TO_PROCESS,
         model=zonos_tts
     )
