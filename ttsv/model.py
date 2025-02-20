@@ -1,9 +1,9 @@
 import torch
 import torchaudio
 import numpy as np
-from zonos.zonos.model import Zonos
-from zonos.zonos.conditioning import make_cond_dict
-from zonos.zonos.utils import DEFAULT_DEVICE as device
+from zonosp.zonos.model import Zonos
+from zonosp.zonos.conditioning import make_cond_dict
+from zonosp.zonos.utils import DEFAULT_DEVICE as device
 
 
 class TTSModel:
