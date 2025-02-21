@@ -1,70 +1,42 @@
-
 import os
 import glob
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build, MediaFileUpload
 from google.colab import userdata
-
+from dotenv import load_dotenv
 from ttsv.config import (
     OUTPUT_DIRECTORY,
     FILENAME_TO_PROCESS,
     CHANNEL_TO_UPLOAD,
     CHANNEL_METADATA
 )
+env_path = ".env"
+load_dotenv(dotenv_path=env_path)
 
-# Check if running in Google Colab
-try:
-    from google.colab import userdata
-    IN_COLAB = True
-    print("Google Colab detected")
-except ImportError:
-    IN_COLAB = False
-
-if not IN_COLAB:
-    print("Not in google Colab")
-    from dotenv import load_dotenv
-    load_dotenv()
-
-YOUTUBE_SCOPES = [
-    "https://www.googleapis.com/auth/youtube.force-ssl",
+YOUTUBE_SCOPES =[    "https://www.googleapis.com/auth/youtube.force-ssl",
     "https://www.googleapis.com/auth/youtube.upload",
     "https://www.googleapis.com/auth/youtube.readonly",
     "https://www.googleapis.com/auth/youtubepartner",
-    "https://www.googleapis.com/auth/youtube"
-]
+    "https://www.googleapis.com/auth/youtube"]
 API_SERVICE_NAME = "youtube"
 API_VERSION = "v3"
 
-def get_secret(key:str):
-    """Retrieve secrets from the correct environment."""
-    if IN_COLAB:
-        print(f"fetching key: {key}")
-        print(f"fetching key: {userdata.get(key)}")
-        print(userdata.get('YOUTUBE_ACCESS_TOKEN_DE'))
-        return userdata.get(key)
-    return os.getenv(key)
-
 def get_youtube_service(channel_lang):
     """Create YouTube service using credentials for the specified channel."""
-    print("get_youtube_service channel launched")
-    print(get_secret("YOUTUBE_ACCESS_TOKEN_DE"))
-    creds_values = {
-    "token": get_secret(f"YOUTUBE_ACCESS_TOKEN_{channel_lang.upper()}"),
-    "refresh_token": get_secret(f"YOUTUBE_REFRESH_TOKEN_{channel_lang.upper()}"),
-    "client_id": get_secret(f"GOOGLE_CLIENT_ID_{channel_lang.upper()}"),
-    "client_secret": get_secret(f"GOOGLE_CLIENT_SECRET_{channel_lang.upper()}")
-    }
-
-    # Quick check
-    for key, val in creds_values.items():
-        if val is None:
-            raise ValueError(f"Missing environment variable for {key}")
-        print(f"Key:{key},Val:{val}")
-
-    return build(API_SERVICE_NAME, API_VERSION,
-        credentials=Credentials(**creds_values, scopes=YOUTUBE_SCOPES)
+    print(os.getenv(f"YOUTUBE_ACCESS_TOKEN_{channel_lang.upper()}")
     )
-
+    return build(
+        API_SERVICE_NAME,
+        API_VERSION,
+        credentials=Credentials(
+            token=os.getenv(f"YOUTUBE_ACCESS_TOKEN_{channel_lang.upper()}"),
+            refresh_token=os.getenv(f"YOUTUBE_REFRESH_TOKEN_{channel_lang.upper()}"),
+            token_uri="https://oauth2.googleapis.com/token",
+            client_id=os.getenv(f"GOOGLE_CLIENT_ID_{channel_lang.upper()}"),
+            client_secret=os.getenv(f"GOOGLE_CLIENT_SECRET_{channel_lang.upper()}"),
+            scopes=YOUTUBE_SCOPES
+        )
+    )
 
 def upload_video(youtube, file_path, metadata):
     """Upload video to YouTube with channel-specific metadata."""
@@ -89,7 +61,9 @@ def upload_subtitles(youtube, video_id, subtitle_files):
     """Upload subtitle files for the video."""
     for sub_path in subtitle_files:
         try:
+            # Extract language code from filename (e.g., "es" from "Pizza-es-es.sbv")
             lang = os.path.basename(sub_path).split("-")[-1].replace(".sbv", "")
+            
             youtube.captions().insert(
                 part="snippet",
                 body={
@@ -110,11 +84,13 @@ def process_channel(channel):
     """Handle video and subtitle upload for a single channel."""
     print(f"\n=== Processing {channel.upper()} channel ===")
     
+    # Get metadata
     metadata = CHANNEL_METADATA.get(channel)
     if not metadata:
         print(f"❌ No metadata found for {channel}")
         return
 
+    # File paths
     video_path = os.path.join(
         OUTPUT_DIRECTORY, FILENAME_TO_PROCESS,
         f"{FILENAME_TO_PROCESS}-{channel}.mp4"
@@ -128,9 +104,11 @@ def process_channel(channel):
         print(f"❌ Video file missing: {video_path}")
         return
 
+    # Initialize service and upload
     youtube = get_youtube_service(channel)
     video_id = upload_video(youtube, video_path, metadata)
     
+    # Upload subtitles if available
     if subtitle_files:
         upload_subtitles(youtube, video_id, subtitle_files)
     else:
@@ -143,6 +121,7 @@ def upload_video_to_channels():
             process_channel(channel)
         except Exception as e:
             print(f"🔥 Failed to process {channel}: {str(e)}")
+
 
 if __name__ == "__main__":
     upload_video_to_channels()
