@@ -2,7 +2,7 @@ import os
 import glob
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build, MediaFileUpload
-from config import (
+from ttsv.config import (
     OUTPUT_DIRECTORY,
     FILENAME_TO_PROCESS,
     CHANNEL_TO_UPLOAD,

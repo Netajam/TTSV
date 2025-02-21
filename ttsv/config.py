@@ -1,7 +1,7 @@
 import json
 
 # Load video_config.json
-VIDEO_CONFIG_PATH = "video_config.json"
+VIDEO_CONFIG_PATH = "ttsv/video_config.json"
 with open(VIDEO_CONFIG_PATH, "r", encoding="utf-8") as file:
     CHANNEL_METADATA = json.load(file)
 

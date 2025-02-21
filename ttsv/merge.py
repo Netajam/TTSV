@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from scipy.io.wavfile import read as read_wav, write as write_wav
-from config import (
+from ttsv.config import (
     CHANNEL_TO_UPLOAD,
     OUTPUT_DIRECTORY,
     FILENAME_TO_PROCESS,

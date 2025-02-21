@@ -1,6 +1,6 @@
 import os
 import subprocess
-from config import (
+from ttsv.config import (
     FILENAME_TO_PROCESS,
     OUTPUT_DIRECTORY,
     CHANNEL_TO_UPLOAD,

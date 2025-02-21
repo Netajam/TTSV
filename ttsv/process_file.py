@@ -2,8 +2,8 @@ import os
 import numpy as np
 from typing import Union, List
 from scipy.io.wavfile import write as write_wav
-from model import ZonosTTS
-from config import (
+from ttsv.model import ZonosTTS
+from ttsv.config import (
     LANGUAGES_TO_PROCESS,
     OUTPUT_DIRECTORY,
     FILENAME_TO_PROCESS,
