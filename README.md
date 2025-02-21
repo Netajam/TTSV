@@ -13,9 +13,28 @@ Install the depencies for ttsv module
 cd TTSV && pip install -e .
 ```
 Install depencencies for zonos
+# Running
+## How to run
 
-# Running on Google Colab
+### **Run Everything**
+```sh
+python main.py
+```
 
+### **Run Only a Specific Step**
+```sh
+python main.py --step 2  # Merge output files
+python main.py --step 4  # Upload to YouTube
+```
+
+### **Run from a Specific Step Onward**
+```sh
+python main.py --from-step 1  # Start from text processing
+python main.py --from-step 3  # Start from video generation
+```
+
+## Running on Google Colab
+You will need to set up your secrets. Use the same names as in the .env.template file. If you want to upload your video on youtube.
 # Dependencies
 
 Zonos package installed as a git submodule

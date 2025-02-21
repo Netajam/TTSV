@@ -1,7 +1,6 @@
 import os
 import numpy as np
 from scipy.io.wavfile import read as read_wav, write as write_wav
-from dotenv import load_dotenv
 from config import (
     CHANNEL_TO_UPLOAD,
     OUTPUT_DIRECTORY,
@@ -10,9 +9,6 @@ from config import (
     REPETITION_PATTERN_TEXT,
 )
 from utils import format_timestamp, parse_generated_filename
-
-# Load environment variables
-load_dotenv()
 
 def gather_files(channel_lang):
     """
