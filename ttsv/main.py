@@ -42,6 +42,7 @@ def main():
 
     # Handling the step logic
     steps = {
+        0: step_0,
         1: step_1,  # Requires model
         2: step_2,
         3: step_3,

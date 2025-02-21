@@ -2,7 +2,6 @@ import os
 import re
 import torch
 import numpy as np
-from TTS.api import TTS
 from scipy.io.wavfile import write as write_wav, read as read_wav
 from ttsv.config import LANGUAGES_TO_PROCESS, OUTPUT_DIRECTORY, FILENAME_TO_PROCESS, \
                   LANG_MODEL_MAP, ROOT_DIRECTORY, USE_CHUNKING, MAX_CHARS_PER_LINE
@@ -10,35 +9,7 @@ from ttsv.config import LANGUAGES_TO_PROCESS, OUTPUT_DIRECTORY, FILENAME_TO_PROC
 device = "cuda" if torch.cuda.is_available() else "cpu"
 _tts_objects = {}  # Stores TTS instances with speaker configurations
 
-def get_tts_for_language(lang: str):
-    """Return a cached TTS instance with speaker configuration for the given language."""
-    if lang not in _tts_objects:
-        # Get model config with fallback to string for backward compatibility
-        model_config = LANG_MODEL_MAP.get(lang)
-        if not model_config:
-            raise ValueError(f"No TTS model defined for language '{lang}'")
-        
-        # Handle both new dict config and old string format
-        if isinstance(model_config, dict):
-            model_name = model_config["model_name"]
-            speaker = model_config.get("speaker")
-        else:
-            model_name = model_config
-            speaker = None
 
-        # Initialize TTS with GPU support if available
-        tts = TTS(model_name=model_name, progress_bar=True)
-        try:
-            tts.to(device)  # Attempt to move to GPU if available
-        except Exception as e:
-            print(f"Couldn't move model to {device}: {str(e)}. Using CPU.")
-        
-        # Store speaker configuration in the TTS object
-        tts.speaker = speaker
-        _tts_objects[lang] = tts
-        print(tts)
-    
-    return _tts_objects[lang]
 
 def format_timestamp(total_seconds):
     """

@@ -11,6 +11,7 @@ LANGUAGES_TO_PROCESS = CHANNEL_TO_UPLOAD + ["en"]
 REPETITION_PATTERN_TEXT= {"es":{"es": ["", "es", "es", "en", "es"], "en": ["", "es", "es", "en", "es"]},"de":{"de": ["", "de", "en", "en", "de","de",""], "en": ["", "de", "de", "en", "de","","de"]},"ru":{"ru": ["", "ru", "ru", "en", "ru"], "en": ["", "ru", "ru", "en", "ru"]}}
 REPETITION_PATTERN_WAVE= [0,0,1,0,1,0,0]
 
+ROOT_DIRECTORY = ""  
 INPUT_DIRECTORY = "text_input"                          # Where your {FILENAME_TO_PROCESS}-{lang}.txt live
 OUTPUT_DIRECTORY = "output"  
 OUTPUT_DIRECTORY_RAW = "output"              # Where you want WAVs + final merges

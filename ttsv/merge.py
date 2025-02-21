@@ -8,7 +8,7 @@ from ttsv.config import (
     REPETITION_PATTERN_WAVE,
     REPETITION_PATTERN_TEXT,
 )
-from utils import format_timestamp, parse_generated_filename
+from ttsv.utils import format_timestamp, parse_generated_filename
 
 def gather_files(channel_lang):
     """
