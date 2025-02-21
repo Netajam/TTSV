@@ -21,7 +21,6 @@ dependencies = [
     "soundfile>=0.13.1",
     "huggingface-hub>=0.28.1",
     "gradio>=5.15.0",
-    "zonos @ content/TTSV/zonosp"
 ]
 
 [project.optional-dependencies]
@@ -40,7 +39,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["ttsv", "zonosp", "zonosp.*"]
+include = ["ttsv", "zonosp", "zonosp.*","zonos"]
 
 [tool.uv]
 no-build-isolation-package = ["flash-attn", "mamba-ssm", "causal-conv1d"]

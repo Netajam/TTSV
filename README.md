@@ -8,6 +8,9 @@ In order for zonos to work install espeak-ng
 ```bash
 !apt install -y espeak-ng
 ```
+```bash
+!touch TTSV/zonosp/__init__.py
+```
 Install the depencies for ttsv module
 ```bash
 cd TTSV && pip install -e .
