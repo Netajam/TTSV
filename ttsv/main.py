@@ -1,6 +1,6 @@
 import argparse
-from ttsv.process_file import process_input_texts
-from ttsv.merge import create_merge_files
+from process_file import process_input_texts
+from merge import create_merge_files
 from generate_video import create_black_videos_with_audio
 from youtube_upload import upload_video_to_channels
 
