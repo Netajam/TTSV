@@ -17,7 +17,7 @@ def clean_line(line: str, forbidden_chars: Union[None, List[str]] = None) -> str
     Clean a single line of text by removing unwanted characters and stripping whitespace.
     """
     if forbidden_chars is None:
-        forbidden_chars = ["*", "#"]
+        forbidden_chars = ["*", "#","„","“"]
     translation_table = str.maketrans('', '', ''.join(forbidden_chars))
     return line.strip().translate(translation_table)
 

@@ -22,6 +22,11 @@ Install the depencies for ttsv module
 cd TTSV && pip install -e .
 ```
 Install depencencies for zonos
+# Setting up your environment
+You can modify values inside the ttsv/config.py file, the ttsv/video_config.json and you should create a ttsv/.env file if you want to perform the step 4 (youtube upload).
+# .env
+place the .env file in the ttsv folder.
+you can show the expected keys in the .env.template file
 # Running
 ## How to run
 
