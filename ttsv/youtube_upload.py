@@ -1,7 +1,10 @@
+
 import os
 import glob
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build, MediaFileUpload
+from google.colab import userdata
+
 from ttsv.config import (
     OUTPUT_DIRECTORY,
     FILENAME_TO_PROCESS,
@@ -13,10 +16,12 @@ from ttsv.config import (
 try:
     from google.colab import userdata
     IN_COLAB = True
+    print("Google Colab detected")
 except ImportError:
     IN_COLAB = False
 
 if not IN_COLAB:
+    print("Not in google Colab")
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -30,26 +35,36 @@ YOUTUBE_SCOPES = [
 API_SERVICE_NAME = "youtube"
 API_VERSION = "v3"
 
-def get_secret(key):
+def get_secret(key:str):
     """Retrieve secrets from the correct environment."""
     if IN_COLAB:
+        print(f"fetching key: {key}")
+        print(f"fetching key: {userdata.get(key)}")
+        print(userdata.get('YOUTUBE_ACCESS_TOKEN_DE'))
         return userdata.get(key)
     return os.getenv(key)
 
 def get_youtube_service(channel_lang):
     """Create YouTube service using credentials for the specified channel."""
-    return build(
-        API_SERVICE_NAME,
-        API_VERSION,
-        credentials=Credentials(
-            token=get_secret(f"YOUTUBE_ACCESS_TOKEN_{channel_lang.upper()}"),
-            refresh_token=get_secret(f"YOUTUBE_REFRESH_TOKEN_{channel_lang.upper()}"),
-            token_uri="https://oauth2.googleapis.com/token",
-            client_id=get_secret(f"GOOGLE_CLIENT_ID_{channel_lang.upper()}"),
-            client_secret=get_secret(f"GOOGLE_CLIENT_SECRET_{channel_lang.upper()}"),
-            scopes=YOUTUBE_SCOPES
-        )
+    print("get_youtube_service channel launched")
+    print(get_secret("YOUTUBE_ACCESS_TOKEN_DE"))
+    creds_values = {
+    "token": get_secret(f"YOUTUBE_ACCESS_TOKEN_{channel_lang.upper()}"),
+    "refresh_token": get_secret(f"YOUTUBE_REFRESH_TOKEN_{channel_lang.upper()}"),
+    "client_id": get_secret(f"GOOGLE_CLIENT_ID_{channel_lang.upper()}"),
+    "client_secret": get_secret(f"GOOGLE_CLIENT_SECRET_{channel_lang.upper()}")
+    }
+
+    # Quick check
+    for key, val in creds_values.items():
+        if val is None:
+            raise ValueError(f"Missing environment variable for {key}")
+        print(f"Key:{key},Val:{val}")
+
+    return build(API_SERVICE_NAME, API_VERSION,
+        credentials=Credentials(**creds_values, scopes=YOUTUBE_SCOPES)
     )
+
 
 def upload_video(youtube, file_path, metadata):
     """Upload video to YouTube with channel-specific metadata."""
