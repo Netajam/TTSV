@@ -10,6 +10,12 @@ In order for zonos to work install espeak-ng
 ```
 ```bash
 !touch TTSV/zonosp/__init__.py
+!touch TTSV/zonosp/zonos/__init__.py
+```
+Create symlink to detect zonos as a module
+
+```bash
+ !ln -s zonosp/zonos zonos
 ```
 Install the depencies for ttsv module
 ```bash

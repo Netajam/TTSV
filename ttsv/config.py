@@ -5,7 +5,7 @@ VIDEO_CONFIG_PATH = "ttsv/video_config.json"
 with open(VIDEO_CONFIG_PATH, "r", encoding="utf-8") as file:
     CHANNEL_METADATA = json.load(file)
 
-FILENAME_TO_PROCESS = "PhrasePump5"   
+FILENAME_TO_PROCESS = "Test"   
 CHANNEL_TO_UPLOAD=["de"]           # e.g. "my_filename"
 LANGUAGES_TO_PROCESS = CHANNEL_TO_UPLOAD + ["en"]
 REPETITION_PATTERN_TEXT= {"es":{"es": ["", "es", "es", "en", "es"], "en": ["", "es", "es", "en", "es"]},"de":{"de": ["", "de", "en", "en", "de","de",""], "en": ["", "de", "de", "en", "de","","de"]},"ru":{"ru": ["", "ru", "ru", "en", "ru"], "en": ["", "ru", "ru", "en", "ru"]}}
